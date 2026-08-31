@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // The backend base URL is read at request time so the same build works in
-  // local development and in Docker Compose.
-  env: {
-    API_BASE_URL: process.env.API_BASE_URL ?? "http://localhost:8000",
-  },
+  // API_BASE_URL is deliberately NOT declared under `env`. That key inlines the
+  // value at build time, which would bake the build machine's URL into the
+  // image and silently ignore the runtime setting -- so the same image could
+  // never point at a different backend. Server components read
+  // process.env.API_BASE_URL directly instead, which resolves at request time.
 };
 
 export default nextConfig;
